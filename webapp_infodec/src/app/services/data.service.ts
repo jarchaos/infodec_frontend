@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
+import { Country } from '../interfaces/Country.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl:string = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +19,12 @@ export class DataService {
     return this.http.post(`${this.baseUrl}/save_history`, data);
   }
 
-  getCountries():Observable<any>{
-    return this.http.get(`${this.baseUrl}/get-all-countries`)
+  getCountries():Observable<Country | undefined>{
+    return this.http.get<Country>(`${this.baseUrl}/get-all-countries`).pipe(
+      catchError((error)=>{
+        console.log(error)
+        return of(undefined);
+      })
+    );
   }
 }
