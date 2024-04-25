@@ -1,1 +1,15 @@
-<p>country-list works!</p>
+<div class="container mt-3">
+  <label for="countrySelect" class="form-label">País de destino</label>
+  <select
+    id="countrySelect"
+    class="form-select"
+    [(ngModel)]="selectedCountry"
+    aria-label="Select country"
+    (change)="onCountryChange()"
+  >
+    <option value="" disabled>Seleccione un país destino...</option>
+    <option *ngFor="let country of countryList" [ngValue]="country.id">
+      {{ country.name }}
+    </option>
+  </select>
+</div>
